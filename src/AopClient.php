@@ -56,7 +56,7 @@ class AopClient
     public function build()
     {
         $query = http_build_query($this->params);
-        $sign = $this->sign($query, $this->signType);
+        $sign = $this->sign($this->params, $this->signType);
 
         return $query . '&' . $sign;
     }

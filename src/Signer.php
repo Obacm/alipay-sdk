@@ -33,14 +33,12 @@ class Signer
         $this->params = $params;
     }
 
-
     public function signWithMD5($key)
     {
         $content = $this->getContentToSign();
 
         return md5($content . $key);
     }
-
 
     public function getContentToSign()
     {
