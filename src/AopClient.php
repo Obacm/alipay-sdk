@@ -51,8 +51,6 @@ class AopClient
             'target_id' => $this->targetId,
             'sign_type' => $this->signType,
         ];
-
-        $this->build();
     }
 
     public function build()
