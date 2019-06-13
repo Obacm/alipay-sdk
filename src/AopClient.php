@@ -58,7 +58,7 @@ class AopClient
         $query = http_build_query($this->params);
         $sign = $this->sign($this->params, $this->signType);
 
-        return $query . '&' . $sign;
+        return $query . '&sign=' . $sign;
     }
 
     protected function sign($params, $signType)
