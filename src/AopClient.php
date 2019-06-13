@@ -118,7 +118,7 @@ class AopClient
     {
         $arr = ['a' ,'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'i', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
-        $this->targetId = $arr[rand(1, 26)] . date('YmdHis') .rand(1000,9999);
+        $this->targetId = $arr[rand(0, 25)] . date('YmdHis') .rand(1000,9999);
 
         return $this;
     }
