@@ -97,7 +97,6 @@ class AopOauth
 
         $body = json_decode($res->getBody(), true);
 
-        \Log::info($body);
         if (isset($body['error_response'])) {
             return ['code' => $body['error_response']['code'], 'msg' => $body['error_response']['sub_msg']];
         }
@@ -114,7 +113,6 @@ class AopOauth
 
         $body = json_decode($res->getBody(), true);
 
-        \Log::info($body);
         if (isset($body['error_response'])) {
             return ['code' => $body['error_response']['code'], 'msg' => $body['error_response']['sub_msg']];
         }
