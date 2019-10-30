@@ -88,14 +88,12 @@ class AopOauth
 
         $res = $client->request('GET', $this->apiName . $param);
 
-        $body = json_decode($res->getBody(), false);
+        $body = json_decode($res->getBody(), true);
 
-        $response = $body->alipay_user_info_share_response;
-
-        if (isset($response->error_response)) {
-            return ['code' => $response->code, 'msg' => $response->sub_msg];
+        if (isset($body['error_response'])) {
+            return ['code' => $body['code'], 'msg' => $body['sub_msg']];
         }
-        return $response;
+        return $body['alipay_user_info_share_response'];
     }
 
     public function getAccessToken($authCode)
@@ -106,14 +104,12 @@ class AopOauth
 
         $res = $client->request('GET', $this->apiName . $param);
 
-        $body = json_decode($res->getBody(), false);
+        $body = json_decode($res->getBody(), true);
 
-        $response = $body->alipay_system_oauth_token_response;
-
-        if (isset($response->error_response)) {
-            return ['code' => $response->code, 'msg' => $response->sub_msg];
+        if (isset($body['error_response'])) {
+            return ['code' => $body['code'], 'msg' => $body['sub_msg']];
         }
-        return $response;
+        return $body['alipay_system_oauth_token_response'];
     }
 
     protected function sign($params, $signType)
