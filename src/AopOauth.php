@@ -24,9 +24,12 @@ class AopOauth
 
     public $params;
 
+    protected $privateKey;
+
     public function __construct()
     {
         $this->setAppId(config('payment.alipay.app_id'));
+        $this->setPrivateKey(config('payment.alipay.private_key'));
     }
 
     public function build($query)
@@ -129,6 +132,26 @@ class AopOauth
         }
 
         return $sign;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPrivateKey()
+    {
+        return $this->privateKey;
+    }
+
+    /**
+     * @param $value
+     *
+     * @return $this
+     */
+    public function setPrivateKey($value)
+    {
+        $this->privateKey = $value;
+
+        return $this;
     }
 
     public function setAppId($value)
