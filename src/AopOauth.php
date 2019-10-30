@@ -18,7 +18,7 @@ class AopOauth
 
     public $version = '1.0';
 
-    public $charset = 'UTP-8';
+    public $charset = 'UTF-8';
 
     public $format = 'json';
 
@@ -84,12 +84,15 @@ class AopOauth
     {
         $param = $this->buildUserInfoParams($accessToken);
 
+        \Log::info('user_info-----' . $param);
+
         $client = new Client();
 
         $res = $client->request('GET', $this->apiName . $param);
 
         $body = json_decode($res->getBody(), true);
 
+        \Log::info($body);
         if (isset($body['error_response'])) {
             return ['code' => $body['code'], 'msg' => $body['sub_msg']];
         }
@@ -100,12 +103,14 @@ class AopOauth
     {
         $param = $this->buildOauthCodeParams($authCode);
 
+        \Log::info('access_token-----' . $param);
         $client = new Client();
 
         $res = $client->request('GET', $this->apiName . $param);
 
         $body = json_decode($res->getBody(), true);
 
+        \Log::info($body);
         if (isset($body['error_response'])) {
             return ['code' => $body['code'], 'msg' => $body['sub_msg']];
         }
