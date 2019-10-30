@@ -47,24 +47,31 @@ class AopOauth
 
         $this->buildParams($this->apiUserInfo);
 
-        $query = http_build_query(array_merge($this->params, $userInfoParams));
+        $params = array_merge($this->params, $userInfoParams);
 
-        return $this->build($query);
+        $sign = $this->sign($params, $this->signType);
+
+        $params['sign'] = $sign;
+
+        return http_build_query($params);
     }
 
-    public function buildOauthCodeParams($code, $refreshToken = '')
+    public function buildOauthCodeParams($code)
     {
         $oauthCodeParams = [
             'grant_type' => 'authorization_code',
             'code' => $code,
-            'refresh_token' => $refreshToken,
         ];
 
         $this->buildParams($this->apiOauthToken);
 
-        $query = http_build_query(array_merge($this->params, $oauthCodeParams));
+        $params = array_merge($this->params, $oauthCodeParams);
 
-        return $this->build($query);
+        $sign = $this->sign($params, $this->signType);
+
+        $params['sign'] = $sign;
+
+        return http_build_query($params);
     }
 
     public function buildParams($method)
@@ -84,8 +91,6 @@ class AopOauth
     {
         $param = $this->buildUserInfoParams($accessToken);
 
-        \Log::info('user_info-----' . $param);
-
         $client = new Client();
 
         $res = $client->request('GET', $this->apiName . $param);
@@ -94,7 +99,7 @@ class AopOauth
 
         \Log::info($body);
         if (isset($body['error_response'])) {
-            return ['code' => $body['code'], 'msg' => $body['sub_msg']];
+            return ['code' => $body['error_response']['code'], 'msg' => $body['error_response']['sub_msg']];
         }
         return $body['alipay_user_info_share_response'];
     }
@@ -103,7 +108,6 @@ class AopOauth
     {
         $param = $this->buildOauthCodeParams($authCode);
 
-        \Log::info('access_token-----' . $param);
         $client = new Client();
 
         $res = $client->request('GET', $this->apiName . $param);
@@ -112,7 +116,7 @@ class AopOauth
 
         \Log::info($body);
         if (isset($body['error_response'])) {
-            return ['code' => $body['code'], 'msg' => $body['sub_msg']];
+            return ['code' => $body['error_response']['code'], 'msg' => $body['error_response']['sub_msg']];
         }
         return $body['alipay_system_oauth_token_response'];
     }
